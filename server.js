@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bookRoutes = require('./routes/bookroutes');
+const userRoutes = require('./routes/userRoutes');
 const app = express();
 const dotenv = require('dotenv');
 
@@ -16,6 +17,7 @@ mongoose.connect(process.env.mongo_url)
 
 
 app.use('/books', bookRoutes);
+app.use('/user', userRoutes);
 
 const PORT = 5000;
 

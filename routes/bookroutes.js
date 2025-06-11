@@ -48,6 +48,32 @@ router.get('/books/:id', async (req, res) => {
     } catch (err) { res.status(500).json({ message: 'Book not found' }) }
 })
 
-// router.put()
+router.put('/books/:id', async (req,res) => {
+    try{
+        const books =await book.findById(req.params.id);
+        if(!books){
+return res.status(404).json({message : "Book not Found!"})
+        }
+        const updatedBook = await book.findByIdAndUpdate(req.params.id,req.body, {new:true})
+        res.json(updatedBook);
+    }
+    catch(err) {
+        res.status(400).json({message : 'Error in updating!'})
+    }
+})
+
+router.delete('/books/:id', async (req,res) => {
+    try{
+        const books = await book.findById(req.params.id);
+        if(!book){
+            return res.status(404).json({message : "No book Found!"})
+        }
+        const deleteBook = await book.findByIdAndDelete(req.params.id)
+        res.json({message : 'Book Deleted'})
+    }
+    catch(err){
+        res.status(404).json({message: 'Error!'})
+    }
+})
 
 module.exports = router;

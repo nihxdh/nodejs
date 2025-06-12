@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const book = require('../models/books');
 const router = express.Router();
 
-router.post('/create', async (req, res) => {
+const authentication = require("../middleware/adminAuth");
+
+router.post('/create', authentication, async (req, res) => {
     try {
         const books = new book({
             title: req.body.title,
@@ -14,6 +16,8 @@ router.post('/create', async (req, res) => {
         if (!books.title || !books.author || !books.publishedDate) {
             return res.status(400).json({ message: 'Required all fields' })
         }
+        const existingBook = await books.findOne({ title });
+        
         const newbook = await books.save();
         res.status(201).json(newbook);
     } catch (err) { res.status(500).json({ message: err.message }) }
